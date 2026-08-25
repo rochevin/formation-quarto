@@ -1,0 +1,160 @@
+---
+title: "Case study: differential gene expression analysis"
+author: "Nicolas Enjalbert Courrech and Pierre Neuvial"
+date: today
+format:
+  html:
+    toc: true
+    number-sections: true
+  pdf:
+    number-sections: true
+bibliography: sanssouci.bib
+execute:
+  cache: true
+---
+
+```{r}
+#| label: setup
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  cache = TRUE
+)
+```
+
+This vignette illustrates the use of `quarto` to build a reproducible data analysis report. 
+
+```{r}
+#| label: install-r-packages
+#| results: hide
+#| message: false
+#| eval: false
+require("ggplot2") || install.packages("ggplot2")
+require("sanssouci") || remotes::install_github("sanssouci-org/sanssouci@develop")
+```
+
+```{r}
+#| label: load-r-packages
+#| results: hide
+#| message: false
+library("ggplot2")
+library("sanssouci")
+library("matrixStats")
+```
+
+# Motivation: a differential gene expression study
+
+Differential gene expression studies aim at identifying genes whose mean expression level differs significantly between two (or more) populations, based on a sample of gene expression measurements from individuals from these populations. The data can be loaded as follows:
+
+```{r}
+#| label: load-data
+#| message: false
+data("RNAseq_blca", package = "sanssouci.data")
+Y <- RNAseq_blca
+groups <- ifelse(colnames(RNAseq_blca) == "III", 1, 0)
+rm(RNAseq_blca)
+```
+
+This data set consists of gene expression measurements for  $n = `r ncol(Y)`$ patients from the Cancer Genome Atlas Urothelial Bladder Carcinoma (TCGA-BLCA) data collection (@tcga2014blca). Following standard practice in RNAseq data analysis, we convert these measurements to to *count per millions* (CPM) in order to make them comparable across samples.
+
+```{r}
+#| label: fig-CPM
+#| fig-cap: "Empirical distribution of gene expression across all genes and samples"
+CPM <- Y/colSums(Y)*1e6
+plot(density(log(1 + CPM)))
+```
+
+We now filter out genes with very low counts in all samples and plot the corresponding distribution:
+
+```{r}
+#| label: fig-CPM-filter
+#| fig-cap: "Empirical distribution of gene expression across all samples after gene filtering"
+ww <- which(rowQuantiles(log(1 + CPM), prob = 0.75) < log(1 + 5))
+Y <- CPM[-ww, ]
+plot(density(log(1 + Y)))
+m <- nrow(Y)
+```
+
+The first mode in @fig-CPM has been filtered out in @fig-CPM-filter.
+The patients are classified into two subgoups, according to their clinical stage (II or III):
+
+```{r}
+#| label: colnames
+table(groups)
+```
+
+The goal of this study is to understand the molecular differences at the gene expression level between the stage II and stage III populations. Each patient is characterized by a vector of $m = `r m`$ gene expression values.  We aim at addressing the following question:
+
+> For which genes is there a difference in the distribution of expression levels between the stage II and stage III populations?
+
+This question can be addressed by performing one statistical test per gene, and to define "differentially expressed" genes as those passing some significance threshold.
+Below, we use the Wilcoxon rank sum (or Mann-Whitney) test for comparing two independent samples. This is a rank-based non-parametric test. A fast version of this test is implemented in the  `sanssouci::rowWilcoxonTests` function.
+
+To obtain post hoc bounds, we create an object of class `SansSouci` and run the `fit` method to use the (parametric) Simes method introduced by @GS2011:
+
+```{r}
+#| label: Simes
+obj <- SansSouci(Y = log(1 + Y), groups = groups)
+alpha = 0.1
+res_Simes <- fit(obj, B = 0, family = "Simes", alpha = alpha,
+                 rowTestFUN = rowWilcoxonTests) ## B=0 => no calibration!
+
+```
+
+The target risk level is set to $\alpha = 0.1$, meaning that all of the statements made below will be true with probability greater than $1-\alpha= 0.9$.
+
+# Volcano plots
+
+<!-- For an interactive volcano plot, see the [volcano plot shiny application]( https://shiny-iidea-sanssouci.apps.math.cnrs.fr/). -->
+
+A classical practice in gene expression studies is to define DE genes as those passing both a significance filter (small $p$-value) and an effect size or "fold change" filter. Here, the fold change of a gene is defined as the difference between the expression medians (on the log scale) of the two groups compared. This double selection by $p$-value and fold change corresponds to two sets of genes, with positive/negative fold change, which can be represented in the following plot:
+
+```{r}
+#| label: volcano
+volcanoPlot(res_Simes, p = 1e-3, r = 1)
+```
+
+This type of plot is called a "volcano plot" @CC2003. Post hoc inference makes it possible to obtain statistical guarantees on selections such as the ones represented in the above figure.
+
+# More powerful method
+
+To obtain more informative results, we use the calibration method introduced by @blanchard20post-hoc and @enjalbert-courrech2022powerful. This method uses sample label permutations to learn the gene dependence structure and obtain a more powerful method. 
+
+```{r}
+#| label: calibration
+#| cache: true
+obj <- SansSouci(Y = log(1 + Y), groups = groups)
+res_perm <- fit(obj, B = 1000, alpha = alpha, family = "Simes",
+           rowTestFUN = rowWilcoxonTests)
+```
+
+The annotations in the corresponding volcano plot illustrate a gain in power (more true positives, lower FDP):
+
+```{r}
+#| label: volcano_perm
+volcanoPlot(res_perm, p = 1e-3, r = 1)
+```
+
+# Session information
+
+```{r}
+#| label: session-info
+sessionInfo()
+```
+
+# Reproducibility
+
+To re-build this vignette from its source, use:
+
+```{r}
+#| label: reproducibility
+#| eval: false
+quarto::quarto_render("post-hoc_differential-expression_RNAseq.qmd", output_format = "pdf")
+# To keep intermediate files, add option 'clean = FALSE' (rmarkdown-based rendering)
+quarto::quarto_render("post-hoc_differential-expression_RNAseq.qmd", output_format = "html")
+```
+
+# References
