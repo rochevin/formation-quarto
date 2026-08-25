@@ -47,7 +47,7 @@ library("matrixStats")
 
 # Motivation: a differential gene expression study
 
-Differential gene expression studies aim at identifying genes whose mean expression level differs significantly between two (or more) populations, based on a sample of gene expression measurements from individuals from these populations. The data can be loaded as follows:
+Differential gene expression studies aim at identifying genes whose mean expression level differs significantly between two (or more) populations, based on a sample of gene expression measurements from individuals from these populations. The data is stored in the package `sanssouci.data` and can be loaded as follows:
 
 ```{r}
 #| label: load-data
@@ -58,7 +58,11 @@ groups <- ifelse(colnames(RNAseq_blca) == "III", 1, 0)
 rm(RNAseq_blca)
 ```
 
-This data set consists of gene expression measurements for  $n = `r ncol(Y)`$ patients from the Cancer Genome Atlas Urothelial Bladder Carcinoma (TCGA-BLCA) data collection (@tcga2014blca). Following standard practice in RNAseq data analysis, we convert these measurements to to *count per millions* (CPM) in order to make them comparable across samples.
+This data set consists of gene expression measurements for  $n = `r ncol(Y)`$ patients from the Cancer Genome Atlas Urothelial Bladder Carcinoma (TCGA-BLCA) data collection (@tcga2014blca). The patients are classified into two subgoups, according to their clinical stage (II or III).
+
+# Preprocessing
+
+Following standard practice in RNAseq data analysis, we convert these measurements to to *count per millions* (CPM) in order to make them comparable across samples.
 
 ```{r}
 #| label: fig-CPM
@@ -79,12 +83,8 @@ m <- nrow(Y)
 ```
 
 The first mode in @fig-CPM has been filtered out in @fig-CPM-filter.
-The patients are classified into two subgoups, according to their clinical stage (II or III):
 
-```{r}
-#| label: colnames
-table(groups)
-```
+# Differential analysis
 
 The goal of this study is to understand the molecular differences at the gene expression level between the stage II and stage III populations. Each patient is characterized by a vector of $m = `r m`$ gene expression values.  We aim at addressing the following question:
 
@@ -93,7 +93,7 @@ The goal of this study is to understand the molecular differences at the gene ex
 This question can be addressed by performing one statistical test per gene, and to define "differentially expressed" genes as those passing some significance threshold.
 Below, we use the Wilcoxon rank sum (or Mann-Whitney) test for comparing two independent samples. This is a rank-based non-parametric test. A fast version of this test is implemented in the  `sanssouci::rowWilcoxonTests` function.
 
-To obtain post hoc bounds, we create an object of class `SansSouci` and run the `fit` method to use the (parametric) Simes method introduced by @GS2011:
+We create an object of class `SansSouci` and run the `fit` method to use the (parametric) Simes method introduced by @GS2011:
 
 ```{r}
 #| label: Simes
@@ -104,7 +104,41 @@ res_Simes <- fit(obj, B = 0, family = "Simes", alpha = alpha,
 
 ```
 
+How many genes are differentially expressed? For any user-defined gene subset, the method reports a lower bound on the number of truly differentially expressed genes (DEG), or, equivalently, an upper bound on the proportion of truly differentially expressed genes. 
+
 The target risk level is set to $\alpha = 0.1$, meaning that all of the statements made below will be true with probability greater than $1-\alpha= 0.9$.
+
+For example, we can consider the following three gene subsets:
+
+- $S_1$: all genes
+- $S_2$: the 500 most significant genes
+- $S_3$: all genes whose $p$-value is below 0.001 and fold change above 0.1:
+
+```{r}
+#| label: DEG-subsets
+S1 <- 1:m
+p1 <- predict(res_Simes, S = S1)
+
+S2 <- which(rank(pValues(res_Simes)) <= 500) 
+p2 <- predict(res_Simes, S = S2)
+
+S3 <- which(pValues(res_Simes) < 0.001 & abs(foldChanges(res_Simes)) > 0.1)
+p3 <- predict(res_Simes, S = S3)
+```
+
+Table @tbl-pred summarizes the results in a singl table:
+
+```{r}
+#| label: tbl-pred
+#| tbl-cap: "Confidence bounds on the number of truly differentially expressed genes (DEG) for three gene subsets: number of true positives (TP) and proportion of false positives (FDP, False Discovery Proportion)"
+pred <- rbind(p1, p2, p3)
+labels <- c("all genes", 
+            "500 most significant genes",
+            "all genes whose $p$-value is below 0.001 and fold change above 0.1")
+pred <- data.frame("Gene subset" = labels, pred)
+knitr::kable(pred)
+```
+
 
 # Volcano plots
 
@@ -119,7 +153,7 @@ volcanoPlot(res_Simes, p = 1e-3, r = 1)
 
 This type of plot is called a "volcano plot" @CC2003. Post hoc inference makes it possible to obtain statistical guarantees on selections such as the ones represented in the above figure.
 
-# More powerful method
+# MA more powerful method
 
 To obtain more informative results, we use the calibration method introduced by @blanchard20post-hoc and @enjalbert-courrech2022powerful. This method uses sample label permutations to learn the gene dependence structure and obtain a more powerful method. 
 
