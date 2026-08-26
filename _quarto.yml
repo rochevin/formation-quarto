@@ -29,28 +29,6 @@ website:
   page-footer:
     left: "Formation Quarto"
 
-format:
-  html:
-    fig-width: 7
-    fig-height: 5
-    fig-dpi: 96
-    theme: cosmo
-    toc: true
-    code-fold: true
-    code-copy: true
-    code-tools: true
-
-crossref:
-
-  fig-title: "Figure"
-  tbl-title: "Tableau"
-  eq-title: "Équation"
-
-  fig-prefix: "fig."
-  tbl-prefix: "tbl."
-  eq-prefix: "eq."
-
-  sec-prefix: "sec."
 
 execute:
   echo: true

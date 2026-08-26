@@ -1,0 +1,39 @@
+---
+title: Rédaction de documents en Rmarkdown et Quarto
+---
+
+Pour s'inscrire, cliquez sur [le formulaire](https://indico.math.cnrs.fr/event/15679/)
+
+
+**Description :**
+La formation est une initiation à la création de rapports de recherche reproductibles et dynamiques à l’aide de Rmarkdown et/ou Quarto. Elle permet d’automatiser la génération de documents intégrant code, résultats et interprétation, et facilite la diffusion en ligne des analyses de données biologiques.
+
+**Objectifs :**
+À la fin de la formation, vous serez capable de :
+- Créer des rapports dynamiques combinant code, visualisations et texte narratif, prêts pour la publication ou le partage avec des collaborateurs.
+- Automatiser la mise à jour de vos analyses et rapports, en garantissant reproductibilité et cohérence.
+- Publier vos rapports en ligne pour une diffusion optimale de vos résultats.
+
+**Mots-clés :**
+Reproductibilité, rapports dynamiques, Rmarkdown, Quarto, visualisation de données, communication scientifique, automatisation, publication en ligne.
+
+**Notions abordées :**
+- Structure et syntaxe de base des documents Rmarkdown/Quarto.
+- Intégration de code R/Python, de sorties graphiques et de texte formaté.
+- Personnalisation de la mise en page et export vers différents formats (PDF, HTML, Word).
+- Publication en ligne : création de sites web, blogs ou livres interactifs à partir de vos rapports.
+- Bonnes pratiques pour la gestion des dépendances et la diffusion des rapports.
+
+**Pré-requis :**
+Connaissances de base en R ou Python. Aucun pré-requis spécifique à Rmarkdown ou Quarto n’est nécessaire.
+
+**Durée de la formation :** 1 jour
+
+**Dates :** 21 septembre 2026
+
+**Lieu :** IMT 
+
+Salle Johnson, Institut de Mathématiques,
+Campus Université Paul Sabatier, 118 Route de Narbonne,
+Batiment 1R1, 95 rue Sébastienne Guyot
+31062 TOULOUSE Cedex
