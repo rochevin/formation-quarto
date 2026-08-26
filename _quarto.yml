@@ -1,0 +1,63 @@
+project:
+  type: website
+  title: "Rédaction de documents en Rmarkdown et Quarto"
+  output-dir: public
+  execute-dir: project
+  render:
+    - "*.qmd"
+
+website:
+  title: "Formation Quarto"
+  navbar:
+    right:
+      - icon: house
+        href: index.qmd
+        text: Home
+      - icon: book
+        href: https://genotoul-biostat.pages.mia.inra.fr/website/
+        text: Plateforme de Biostatistique Toulouse - Génotoul
+      - icon: gitlab
+        href: https://forge.inrae.fr/genotoul-biostat/formation-quarto
+        aria-label: GitLab
+        text: Dépôt du code source
+  sidebar:
+    style: "docked"
+    search: true
+    contents: auto
+    reader-mode: true
+
+  page-footer:
+    left: "Formation Quarto"
+
+format:
+  html:
+    fig-width: 7
+    fig-height: 5
+    fig-dpi: 96
+    theme: cosmo
+    toc: true
+    code-fold: true
+    code-copy: true
+    code-tools: true
+
+crossref:
+
+  fig-title: "Figure"
+  tbl-title: "Tableau"
+  eq-title: "Équation"
+
+  fig-prefix: "fig."
+  tbl-prefix: "tbl."
+  eq-prefix: "eq."
+
+  sec-prefix: "sec."
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+
+
+resources:
+  - "Resources/*"

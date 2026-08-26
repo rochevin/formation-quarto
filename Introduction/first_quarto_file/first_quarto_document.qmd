@@ -1,0 +1,118 @@
+---
+author: Me
+title: "The best notebook in the world"
+subtile: "or at least in europe ..."
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    theme:
+      light: flatly
+      dark: darkly
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this 
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+## Displaying code without rendering
+
+
+```r
+1+1
+```
+
+is not the same as 
+
+```{r}
+1 + 1
+```
+
+I can also do it in my markdown text where i know that 1+1=`{r} 1+1`.
+
+## Rendering plots in quarto documents
+
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+#| echo: false
+#| fig-cap: "Petal width vs Petal Length in iris dataset"
+iris |> ggplot(aes(x=Petal.Width,Petal.Length,col=Species)) + geom_point()
+```
+
+## Displaying an image
+
+![This is an existing image](../images/Biostat_logo-rvb.png)
+
+## Rendering table within quarto documents
+
+```{r}
+library(gt)
+```
+
+```{r}
+iris |> gt() |>   tab_header(
+    title = "Iris dataset from fisher & Anderson",
+    subtitle = md("`iris` is an R dataset")
+  ) |>   data_color(
+    columns = Species,
+    method = "factor",
+    palette = "viridis"
+  )
+```
+
+## Document metadata 
+
+
+## Use a different output format
+
+All formats: https://quarto.org/docs/output-formats/all-formats.html
+
+```yaml
+---
+title: "My Document"
+format: 
+  pdf
+---
+```
+
+or `quarto render quarto render Introduction/first_quarto_file/first_quarto_document.qmd --to pdf`
+
+## Change the metadata to customize the output
+
+---
+author: Me
+title: "The best notebook in the world"
+subtile: "or at least europe ..."
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    theme:
+      light: flatly
+      dark: darkly
+    
+---

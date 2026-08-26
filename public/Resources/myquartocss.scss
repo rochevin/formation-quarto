@@ -1,0 +1,78 @@
+/*-- scss:defaults --*/
+$body-bg: #FFFFFF;
+$body-color: #363636;
+$link-color: #ff0f87;
+$presentation-font-size-root: 25px;
+$r-background-color: #FFFFFF;
+$base_color: #363636;
+$code_inline_color: #107006;
+$text_bold_color: #822744;
+$font-family-sans-serif: 'Lato', Tahoma, sans-serif !default;
+$presentation-heading-font: 'Yanone Kaffeesatz',  Tahoma, sans-serif  !default;
+$presentation-heading-color: #562457 !default;
+
+//code
+$code-color: #88398A !default;
+$font-family-monospace: 'Inconsolata', monospace  !default;
+/*-- scss:rules --*/
+
+.reveal .slide-logo {
+  display: block;
+  position: fixed;
+  bottom: unset !important;
+  float: right;
+  margin-left: auto;
+  margin-right: 5px;
+  top: 5px;
+  right: 5px;
+  height: 40px !important;
+  width: 100x !important;
+  max-width: unset !important;
+  max-height: unset !important;
+}
+
+.reveal .slide-number {
+  padding-top: 70px;
+}
+
+.reveal-viewport {
+  background: #fff;
+  background-color: #FFFFFF !important;
+}
+
+.reveal .slide blockquote {
+  border-left: 3px solid $text-muted;
+  padding-left: 0.5em;
+}
+
+.reveal code {
+  font-size: 80%;
+}
+
+.reveal .code {
+  font-size: 18px;
+}
+
+.reveal pre.sourceCode code {
+  background-color: #fff;
+  font-size: 170%;
+}
+
+.reveal .slide ul li, .reveal .slide ol li {
+  margin-top: 0em;
+  margin-bottom: 0.2em;
+}
+
+.cell {
+  line-height: 1.3;
+  padding-top: 0.8rem;
+}
+
+.font70pct {
+    font-size: 70%;
+}
+
+.center {
+    text-align: center;
+}
+        

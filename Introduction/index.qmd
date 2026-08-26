@@ -1,0 +1,218 @@
+---
+title: "Rédaction de documents en Rmarkdown et Quarto"
+subtitle: "Introduction à quarto" 
+author:
+  - "Pierre Neuvial"
+  - "Vincent Rocher"
+format:
+  revealjs:
+    slide-number: true
+    progress: true
+    fontsize: 25px
+    theme: 
+      - simple
+      - ../Resources/myquartocss.scss
+    view-distance: 200
+code-annotations: below
+logo: images/Biostat_logo-rvb.png
+width: 1600
+height: 800
+execute:
+  echo: true
+---
+
+## `Quarto`
+
+
+:::: {.columns}
+
+
+::: {.column width="60%"}
+
+### Create scientific notebooks ...
+
+```{=html}
+<iframe
+  src="first_quarto_file/first_quarto_document.html"
+  width="100%"
+  height="600"
+  style="border: 1px solid #ccc;">
+</iframe>
+
+```
+:::
+
+
+::: {.column width="40%"}
+
+
+
+### With an open-source syntax and compilation system ...
+
+```bash
+quarto render first_quarto_file/first_quarto_document.qmd
+
+```
+
+
+
+````
+{{< include first_quarto_file/first_quarto_document.qmd >}}
+````
+
+
+
+:::
+
+::::
+
+
+## The quarto `.qmd` format
+
+- YAML: A key-value pairs format to store document **metadata** (title, date, format, ...)
+- Chunks: Code block identified with ``{r}`` 
+- [The markdown syntax](https://www.markdownguide.org/basic-syntax/)
+
+### Gallery
+
+```{=html}
+<iframe
+  src="https://quarto.org/docs/gallery/#articles-reports"
+  width="100%"
+  height="500"
+  style="border: 1px solid #ccc;">
+</iframe>
+
+```
+
+
+## YAML header
+
+- A key-value pairs format to store document **metadata** (title, date, format, ...)
+
+
+### Example
+
+```yaml
+---
+title: "Hello, Quarto"
+format: html
+editor: visual
+---
+```
+
+
+### How it works
+
+```yaml
+---
+option1:
+  option1.1:
+    option1.1.1: argument
+option2: argument
+---
+```
+
+
+
+## Code chunks
+
+- Code block identified with ``{r}`` 
+
+
+```{r}
+#| output-location: column
+#| label: chunk_example
+#| fig-width: 6
+#| fig-height: 4
+#| fig-cap: "Air Quality"
+
+library(ggplot2)
+ggplot(airquality, aes(Temp, Ozone)) + 
+  geom_point() + 
+  geom_smooth(method = "loess", se = FALSE)
+```
+
+
+
+
+## Markdown text
+
+- [The markdown syntax](https://www.markdownguide.org/basic-syntax/)
+- Quarto use markdown syntax for text, which is interpreted into html / pdf output
+
+| Result | Markdown | Html |
+|--------|----------|------|
+| *Italic* | `*Italic*` or `_Italic_` | `<i>Italic</i>` or `<em>Italic</em>`|
+| ***Bold & Italic*** | `***Bold & Italic***` or `___Bold & Italic___` | `<b><i>Bold & Italic</i></b>`  |
+|~~Strike~~ | `~~Strike~~` | `<strike>Strike<\strike>` |
+| `Inline code` | `` `Inline code` `` | `<code>Inline code<\code>` |
+
+: From markdown to output
+
+
+## How it works
+
+![From quarto documentation](images/rstudio-qmd-how-it-works.png){.border fig-align="center" width="100%"}
+
+- `.qmd` is the source.
+- [knitr](http://yihui.name/knitr/): chunks -> markdown.
+- [pandoc](http://pandoc.org/) convert markdown into the output format.
+
+
+## Installation
+
+### Install and update
+
+- Quarto is available as an executable here: https://quarto.org/docs/get-started/
+- But available natively within Rstudio using the render button.
+
+### Quarto is a standalone tool
+
+- No language needed : It is not a R package (`Rmarkdown` is).
+
+## Rendering our first document
+
+
+### Quarto generate beautiful documents using raw text as template
+
+With ...
+
+- `quarto render`
+- <kbd>![](images/rstudio-render-button.png){width="25" height="20"}</kbd> **Render** button in the RStudio IDE 
+- `quarto::quarto_render("hello.qmd")`
+
+
+## Output formats
+
+### Single document
+
+* Notebook / report:
+  - html: an html document (open with navigator)
+  - pdf: a pdf document generated using LaTeX
+  - docx: Word document
+  - ipynb: jupyter notebook
+* Slides:
+  - html: using revealjs library
+  - pdf: beamer package with LaTeX
+  - pptx: PowerPoint presentation
+* [Dashboard](https://quarto.org/docs/dashboards/): static or interactive (with shiny)
+
+
+### Multiple documents
+
+* Website: rendering a group of documents into a single website with navigation
+* Books: multi-format output for chapters into a single manuscript.
+* [Quarto manuscripts](https://quarto.org/docs/manuscripts/).
+
+## Getting started
+
+### `.qmd` creation
+
+From `Rstudio > File > New File > Quarto document`
+
+### Create a project 
+
+- used to handle multiple documents (website, blog, book, ...)
+
+![The project wizard in Rstudio](images/project_wizard.png){.border fig-align="center" width="100%"}
