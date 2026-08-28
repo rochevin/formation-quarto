@@ -33,7 +33,7 @@ execute:
 
 ```{=html}
 <iframe
-  src="first_quarto_file/first_quarto_document.html"
+  src="../Exercices/first_quarto_file/first_quarto_document.html"
   width="100%"
   height="600"
   style="border: 1px solid #ccc;">
@@ -50,14 +50,14 @@ execute:
 ### With an open-source syntax and compilation system ...
 
 ```bash
-quarto render first_quarto_file/first_quarto_document.qmd
+quarto render Exercices/first_quarto_file/first_quarto_document.qmd
 
 ```
 
 
 
 ````
-{{< include first_quarto_file/first_quarto_document.qmd >}}
+{{< include ../Exercices/first_quarto_file/first_quarto_document.qmd >}}
 ````
 
 
