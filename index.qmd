@@ -10,6 +10,7 @@ La formation est une initiation à la création de rapports de recherche reprodu
 
 **Objectifs :**
 À la fin de la formation, vous serez capable de :
+
 - Créer des rapports dynamiques combinant code, visualisations et texte narratif, prêts pour la publication ou le partage avec des collaborateurs.
 - Automatiser la mise à jour de vos analyses et rapports, en garantissant reproductibilité et cohérence.
 - Publier vos rapports en ligne pour une diffusion optimale de vos résultats.
@@ -18,6 +19,7 @@ La formation est une initiation à la création de rapports de recherche reprodu
 Reproductibilité, rapports dynamiques, Rmarkdown, Quarto, visualisation de données, communication scientifique, automatisation, publication en ligne.
 
 **Notions abordées :**
+
 - Structure et syntaxe de base des documents Rmarkdown/Quarto.
 - Intégration de code R/Python, de sorties graphiques et de texte formaté.
 - Personnalisation de la mise en page et export vers différents formats (PDF, HTML, Word).

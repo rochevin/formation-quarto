@@ -14,7 +14,7 @@ website:
         href: index.qmd
         text: Home
       - icon: book
-        href: https://genotoul-biostat.pages.mia.inra.fr/website/
+        href: https://genotoul-biostat.pages-forge.inrae.fr/website/
         text: Plateforme de Biostatistique Toulouse - Génotoul
       - icon: gitlab
         href: https://forge.inrae.fr/genotoul-biostat/formation-quarto

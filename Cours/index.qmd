@@ -216,3 +216,70 @@ From `Rstudio > File > New File > Quarto document`
 - used to handle multiple documents (website, blog, book, ...)
 
 ![The project wizard in Rstudio](images/project_wizard.png){.border fig-align="center" width="100%"}
+
+
+## Work with multiple documents
+
+When working on multiple documents, we need a `_quarto.yml` file.
+
+:::{.fragment}
+``` yaml
+project:
+  type: website
+  title: "Rédaction de documents en Rmarkdown et Quarto"
+  output-dir: docs
+  execute-dir: project
+  render:
+    - "*.qmd"
+
+website:
+  title: "Formation Quarto"
+  navbar:
+    right:
+      - icon: house
+        href: index.qmd
+        text: Home
+      - icon: book
+        href: https://genotoul-biostat.pages-forge.inrae.fr/website/
+        text: Plateforme de Biostatistique Toulouse - Génotoul
+      - icon: gitlab
+        href: https://forge.inrae.fr/genotoul-biostat/formation-quarto
+        aria-label: GitLab
+        text: Dépôt du code source
+  sidebar:
+    style: "docked"
+    search: true
+    contents: auto
+    reader-mode: true
+
+  page-footer:
+    left: "Formation Quarto"
+
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+
+
+resources:
+  - "Resources/*"
+```
+:::
+
+## Deploy a quarto document
+
+- `Github`:
+  - add a `.nojekill` file : Tells github to do nothing but publishing.
+  - Import your project on github (`git push`)
+  - On `Settings > Pages`:
+    - Deploy from a branch
+    - Branch : `main` & directory `/docs`
+- `Gitlab`:
+  - add a `.gitlab-ci.yaml` file
+  - It's done.
+
+::: {.callout-tip appearance="minimal"}
+We don't have to push source files, we just need "binaries" : html, css, ...
+:::
