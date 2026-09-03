@@ -5,9 +5,9 @@ pages:
   script:
     - echo "The site will be deployed to $CI_PAGES_URL"
   pages:
-    publish: public
+    publish: docs
   artifacts:
     paths:
-      - public
+      - docs
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
