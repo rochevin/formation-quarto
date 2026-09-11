@@ -5,6 +5,7 @@ project:
   execute-dir: project
   render:
     - "*.qmd"
+    - "!Exercices/website/*"
 
 website:
   title: "Formation Quarto"

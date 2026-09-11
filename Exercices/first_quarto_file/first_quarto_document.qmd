@@ -64,7 +64,7 @@ iris |> ggplot(aes(x=Petal.Width,Petal.Length,col=Species)) + geom_point()
 
 ## Displaying an image
 
-![This is an existing image](../images/Biostat_logo-rvb.png)
+![This is an existing image](../../Cours/images/Biostat_logo-rvb.png){fig-align:center; width=150%}
 
 ## Rendering table within quarto documents
 
@@ -81,6 +81,26 @@ iris |> gt() |>   tab_header(
     method = "factor",
     palette = "viridis"
   )
+```
+
+## It can also be done by hand ... ?
+
+Table: Iris dataset from Fisher & Anderson
+
+| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species    |
+|------------:|-----------:|------------:|-----------:|:----------|
+|          4.9|         3.1|          1.5|         0.1|setosa     |
+|          5.2|         2.7|          3.9|         1.4|versicolor |
+|          7.2|         3.6|          6.1|         2.5|virginica  |
+
+```markdown
+Table: Iris dataset from Fisher & Anderson
+
+| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species    |
+|------------:|-----------:|------------:|-----------:|:----------|
+|          4.9|         3.1|          1.5|         0.1|setosa     |
+|          5.2|         2.7|          3.9|         1.4|versicolor |
+|          7.2|         3.6|          6.1|         2.5|virginica  |
 ```
 
 ## Document metadata 

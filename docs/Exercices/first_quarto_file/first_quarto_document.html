@@ -302,7 +302,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://genotoul-biostat.pages.mia.inra.fr/website/"> <i class="bi bi-book" role="img">
+    <a class="nav-link" href="https://genotoul-biostat.pages-forge.inrae.fr/website/"> <i class="bi bi-book" role="img">
 </i> 
 <span class="menu-text">Plateforme de Biostatistique Toulouse - Génotoul</span></a>
   </li>  
@@ -366,13 +366,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">First Quarto File</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Advanced Quarto</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Exercices/advanced_quarto/advanced_quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">advanced_quarto</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">First Quarto File</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../Exercices/first_quarto_file/first_quarto_document.html" class="sidebar-item-text sidebar-link active">
@@ -399,6 +416,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#rendering-plots-in-quarto-documents" id="toc-rendering-plots-in-quarto-documents" class="nav-link" data-scroll-target="#rendering-plots-in-quarto-documents">Rendering plots in quarto documents</a></li>
   <li><a href="#displaying-an-image" id="toc-displaying-an-image" class="nav-link" data-scroll-target="#displaying-an-image">Displaying an image</a></li>
   <li><a href="#rendering-table-within-quarto-documents" id="toc-rendering-table-within-quarto-documents" class="nav-link" data-scroll-target="#rendering-table-within-quarto-documents">Rendering table within quarto documents</a></li>
+  <li><a href="#it-can-also-be-done-by-hand" id="toc-it-can-also-be-done-by-hand" class="nav-link" data-scroll-target="#it-can-also-be-done-by-hand">It can also be done by hand … ?</a></li>
   <li><a href="#document-metadata" id="toc-document-metadata" class="nav-link" data-scroll-target="#document-metadata">Document metadata</a></li>
   <li><a href="#use-a-different-output-format" id="toc-use-a-different-output-format" class="nav-link" data-scroll-target="#use-a-different-output-format">Use a different output format</a></li>
   <li><a href="#change-the-metadata-to-customize-the-output" id="toc-change-the-metadata-to-customize-the-output" class="nav-link" data-scroll-target="#change-the-metadata-to-customize-the-output">Change the metadata to customize the output</a></li>
@@ -494,12 +512,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="displaying-an-image" class="level2">
 <h2 class="anchored" data-anchor-id="displaying-an-image">Displaying an image</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/Biostat_logo-rvb.png" class="img-fluid figure-img"></p>
-<figcaption>This is an existing image</figcaption>
-</figure>
-</div>
+<p><img src="../../Cours/images/Biostat_logo-rvb.png" class="img-fluid" alt="This is an existing image">{fig-align:center; width=150%}</p>
 </section>
 <section id="rendering-table-within-quarto-documents" class="level2">
 <h2 class="anchored" data-anchor-id="rendering-table-within-quarto-documents">Rendering table within quarto documents</h2>
@@ -522,23 +535,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div id="kaflshtxpy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#kaflshtxpy table {
+<div id="sjqlvhmgvk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#sjqlvhmgvk table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#kaflshtxpy thead, #kaflshtxpy tbody, #kaflshtxpy tfoot, #kaflshtxpy tr, #kaflshtxpy td, #kaflshtxpy th {
+#sjqlvhmgvk thead, #sjqlvhmgvk tbody, #sjqlvhmgvk tfoot, #sjqlvhmgvk tr, #sjqlvhmgvk td, #sjqlvhmgvk th {
   border-style: none;
 }
 
-#kaflshtxpy p {
+#sjqlvhmgvk p {
   margin: 0;
   padding: 0;
 }
 
-#kaflshtxpy .gt_table {
+#sjqlvhmgvk .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -564,12 +577,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#kaflshtxpy .gt_caption {
+#sjqlvhmgvk .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#kaflshtxpy .gt_title {
+#sjqlvhmgvk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -581,7 +594,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#kaflshtxpy .gt_subtitle {
+#sjqlvhmgvk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -593,7 +606,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#kaflshtxpy .gt_heading {
+#sjqlvhmgvk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -605,13 +618,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#kaflshtxpy .gt_bottom_border {
+#sjqlvhmgvk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#kaflshtxpy .gt_col_headings {
+#sjqlvhmgvk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -626,7 +639,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#kaflshtxpy .gt_col_heading {
+#sjqlvhmgvk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -646,7 +659,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#kaflshtxpy .gt_column_spanner_outer {
+#sjqlvhmgvk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -658,15 +671,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#kaflshtxpy .gt_column_spanner_outer:first-child {
+#sjqlvhmgvk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#kaflshtxpy .gt_column_spanner_outer:last-child {
+#sjqlvhmgvk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#kaflshtxpy .gt_column_spanner {
+#sjqlvhmgvk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -678,11 +691,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#kaflshtxpy .gt_spanner_row {
+#sjqlvhmgvk .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#kaflshtxpy .gt_group_heading {
+#sjqlvhmgvk .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -708,7 +721,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#kaflshtxpy .gt_empty_group_heading {
+#sjqlvhmgvk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -723,15 +736,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#kaflshtxpy .gt_from_md > :first-child {
+#sjqlvhmgvk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#kaflshtxpy .gt_from_md > :last-child {
+#sjqlvhmgvk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#kaflshtxpy .gt_row {
+#sjqlvhmgvk .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -750,7 +763,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#kaflshtxpy .gt_stub {
+#sjqlvhmgvk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -763,7 +776,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#kaflshtxpy .gt_stub_row_group {
+#sjqlvhmgvk .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -777,15 +790,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#kaflshtxpy .gt_row_group_first td {
+#sjqlvhmgvk .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#kaflshtxpy .gt_row_group_first th {
+#sjqlvhmgvk .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#kaflshtxpy .gt_summary_row {
+#sjqlvhmgvk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -795,16 +808,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#kaflshtxpy .gt_first_summary_row {
+#sjqlvhmgvk .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#kaflshtxpy .gt_first_summary_row.thick {
+#sjqlvhmgvk .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#kaflshtxpy .gt_last_summary_row {
+#sjqlvhmgvk .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -814,7 +827,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#kaflshtxpy .gt_grand_summary_row {
+#sjqlvhmgvk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -824,7 +837,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#kaflshtxpy .gt_first_grand_summary_row {
+#sjqlvhmgvk .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -834,7 +847,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#kaflshtxpy .gt_last_grand_summary_row_top {
+#sjqlvhmgvk .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -844,11 +857,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#kaflshtxpy .gt_striped {
+#sjqlvhmgvk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#kaflshtxpy .gt_table_body {
+#sjqlvhmgvk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -857,7 +870,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#kaflshtxpy .gt_footnotes {
+#sjqlvhmgvk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -871,7 +884,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#kaflshtxpy .gt_footnote {
+#sjqlvhmgvk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -880,7 +893,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#kaflshtxpy .gt_sourcenotes {
+#sjqlvhmgvk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -894,7 +907,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#kaflshtxpy .gt_sourcenote {
+#sjqlvhmgvk .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -902,72 +915,72 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#kaflshtxpy .gt_left {
+#sjqlvhmgvk .gt_left {
   text-align: left;
 }
 
-#kaflshtxpy .gt_center {
+#sjqlvhmgvk .gt_center {
   text-align: center;
 }
 
-#kaflshtxpy .gt_right {
+#sjqlvhmgvk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#kaflshtxpy .gt_font_normal {
+#sjqlvhmgvk .gt_font_normal {
   font-weight: normal;
 }
 
-#kaflshtxpy .gt_font_bold {
+#sjqlvhmgvk .gt_font_bold {
   font-weight: bold;
 }
 
-#kaflshtxpy .gt_font_italic {
+#sjqlvhmgvk .gt_font_italic {
   font-style: italic;
 }
 
-#kaflshtxpy .gt_super {
+#sjqlvhmgvk .gt_super {
   font-size: 65%;
 }
 
-#kaflshtxpy .gt_footnote_marks {
+#sjqlvhmgvk .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#kaflshtxpy .gt_asterisk {
+#sjqlvhmgvk .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#kaflshtxpy .gt_indent_1 {
+#sjqlvhmgvk .gt_indent_1 {
   text-indent: 5px;
 }
 
-#kaflshtxpy .gt_indent_2 {
+#sjqlvhmgvk .gt_indent_2 {
   text-indent: 10px;
 }
 
-#kaflshtxpy .gt_indent_3 {
+#sjqlvhmgvk .gt_indent_3 {
   text-indent: 15px;
 }
 
-#kaflshtxpy .gt_indent_4 {
+#sjqlvhmgvk .gt_indent_4 {
   text-indent: 20px;
 }
 
-#kaflshtxpy .gt_indent_5 {
+#sjqlvhmgvk .gt_indent_5 {
   text-indent: 25px;
 }
 
-#kaflshtxpy .katex-display {
+#sjqlvhmgvk .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#kaflshtxpy div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#sjqlvhmgvk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2046,17 +2059,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+<section id="it-can-also-be-done-by-hand" class="level2">
+<h2 class="anchored" data-anchor-id="it-can-also-be-done-by-hand">It can also be done by hand … ?</h2>
+<table class="caption-top table">
+<caption>Iris dataset from Fisher &amp; Anderson</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Sepal.Length</th>
+<th style="text-align: right;">Sepal.Width</th>
+<th style="text-align: right;">Petal.Length</th>
+<th style="text-align: right;">Petal.Width</th>
+<th style="text-align: left;">Species</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">4.9</td>
+<td style="text-align: right;">3.1</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: left;">setosa</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5.2</td>
+<td style="text-align: right;">2.7</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">1.4</td>
+<td style="text-align: left;">versicolor</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7.2</td>
+<td style="text-align: right;">3.6</td>
+<td style="text-align: right;">6.1</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: left;">virginica</td>
+</tr>
+</tbody>
+</table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="an">Table:</span><span class="co"> Iris dataset from Fisher &amp; Anderson</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Sepal.Length<span class="pp">|</span> Sepal.Width<span class="pp">|</span> Petal.Length<span class="pp">|</span> Petal.Width<span class="pp">|</span>Species    <span class="pp">|</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="pp">|------------:|-----------:|------------:|-----------:|:----------|</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>          4.9<span class="pp">|</span>         3.1<span class="pp">|</span>          1.5<span class="pp">|</span>         0.1<span class="pp">|</span>setosa     <span class="pp">|</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>          5.2<span class="pp">|</span>         2.7<span class="pp">|</span>          3.9<span class="pp">|</span>         1.4<span class="pp">|</span>versicolor <span class="pp">|</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>          7.2<span class="pp">|</span>         3.6<span class="pp">|</span>          6.1<span class="pp">|</span>         2.5<span class="pp">|</span>virginica  <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
 <section id="document-metadata" class="level2">
 <h2 class="anchored" data-anchor-id="document-metadata">Document metadata</h2>
 </section>
 <section id="use-a-different-output-format" class="level2">
 <h2 class="anchored" data-anchor-id="use-a-different-output-format">Use a different output format</h2>
 <p>All formats: https://quarto.org/docs/output-formats/all-formats.html</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My Document"</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">  pdf</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My Document"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">  pdf</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>or <code>quarto render quarto render Introduction/first_quarto_file/first_quarto_document.qmd --to pdf</code></p>
 </section>
 <section id="change-the-metadata-to-customize-the-output" class="level2">
