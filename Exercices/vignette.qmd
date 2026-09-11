@@ -6,6 +6,7 @@ format:
   html:
     toc: true
     number-sections: true
+    code-fold: show
   pdf:
     number-sections: true
 bibliography: sanssouci.bib
@@ -27,6 +28,10 @@ knitr::opts_chunk$set(
 
 This vignette illustrates the use of `quarto` to build a reproducible data analysis report. 
 
+We start by installing and loading required packages. 
+
+Installation:
+
 ```{r}
 #| label: install-r-packages
 #| results: hide
@@ -35,6 +40,8 @@ This vignette illustrates the use of `quarto` to build a reproducible data analy
 require("ggplot2") || install.packages("ggplot2")
 require("sanssouci") || remotes::install_github("sanssouci-org/sanssouci@develop")
 ```
+
+Loading:
 
 ```{r}
 #| label: load-r-packages
@@ -53,12 +60,22 @@ Differential gene expression studies aim at identifying genes whose mean express
 #| label: load-data
 #| message: false
 data("RNAseq_blca", package = "sanssouci.data")
+```
+
+This data set consists of gene expression measurements for  $n = `r ncol(RNAseq_blca)`$ patients from the Cancer Genome Atlas Urothelial Bladder Carcinoma (TCGA-BLCA) data collection (@tcga2014blca). The patients are classified into two subgoups, according to their clinical stage (II or III). For convenience we rename the data set and create a `groups` variable:
+
+```{r}
+#| label: groups
+#| message: false
 Y <- RNAseq_blca
-groups <- ifelse(colnames(RNAseq_blca) == "III", 1, 0)
+groups <- ifelse(colnames(Y) == "III", 1, 0)
 rm(RNAseq_blca)
 ```
 
-This data set consists of gene expression measurements for  $n = `r ncol(Y)`$ patients from the Cancer Genome Atlas Urothelial Bladder Carcinoma (TCGA-BLCA) data collection (@tcga2014blca). The patients are classified into two subgoups, according to their clinical stage (II or III).
+```{r}
+knitr::kable(table(groups))
+```
+
 
 # Preprocessing
 
@@ -71,7 +88,7 @@ CPM <- Y/colSums(Y)*1e6
 plot(density(log(1 + CPM)))
 ```
 
-We now filter out genes with very low counts in all samples and plot the corresponding distribution:
+We now filter out genes with very low counts (more precisely: genes for which 75% of samples have less than 5 reads) and plot the corresponding distribution:
 
 ```{r}
 #| label: fig-CPM-filter
@@ -90,8 +107,8 @@ The goal of this study is to understand the molecular differences at the gene ex
 
 > For which genes is there a difference in the distribution of expression levels between the stage II and stage III populations?
 
-This question can be addressed by performing one statistical test per gene, and to define "differentially expressed" genes as those passing some significance threshold.
-Below, we use the Wilcoxon rank sum (or Mann-Whitney) test for comparing two independent samples. This is a rank-based non-parametric test. A fast version of this test is implemented in the  `sanssouci::rowWilcoxonTests` function.
+This question can be addressed by performing one statistical test per gene, and to define "differentially expressed" (DE) genes as those passing some significance threshold.
+Below, we use the Wilcoxon rank sum (or Mann-Whitney) test for comparing two independent samples. It is a rank-based, non-parametric test. A fast version of this test is implemented in the  `sanssouci::rowWilcoxonTests` function.
 
 We create an object of class `SansSouci` and run the `fit` method to use the (parametric) Simes method introduced by @GS2011:
 
@@ -104,9 +121,9 @@ res_Simes <- fit(obj, B = 0, family = "Simes", alpha = alpha,
 
 ```
 
-How many genes are differentially expressed? For any user-defined gene subset, the method reports a lower bound on the number of truly differentially expressed genes (DEG), or, equivalently, an upper bound on the proportion of truly differentially expressed genes. 
+How many genes are differentially expressed? For any user-defined gene subset, the method reports a lower bound on the number of truly differentially expressed genes (DEG), or, equivalently, an upper bound on the proportion of truly differentially expressed genes[^risk].
 
-The target risk level is set to $\alpha = 0.1$, meaning that all of the statements made below will be true with probability greater than $1-\alpha= 0.9$.
+[^risk]: The target risk level is set to $\alpha = 0.1$, meaning that all of the statements made below will be true with probability greater than $1-\alpha= 0.9$.
 
 For example, we can consider the following three gene subsets:
 
@@ -118,15 +135,18 @@ For example, we can consider the following three gene subsets:
 #| label: DEG-subsets
 S1 <- 1:m
 p1 <- predict(res_Simes, S = S1)
+p1
 
 S2 <- which(rank(pValues(res_Simes)) <= 500) 
 p2 <- predict(res_Simes, S = S2)
+p2
 
 S3 <- which(pValues(res_Simes) < 0.001 & abs(foldChanges(res_Simes)) > 0.1)
 p3 <- predict(res_Simes, S = S3)
+p3
 ```
 
-Table @tbl-pred summarizes the results in a singl table:
+The results can be summarized in a single table (see Table @tbl-pred):
 
 ```{r}
 #| label: tbl-pred
@@ -136,7 +156,7 @@ labels <- c("all genes",
             "500 most significant genes",
             "all genes whose $p$-value is below 0.001 and fold change above 0.1")
 pred <- data.frame("Gene subset" = labels, pred)
-knitr::kable(pred)
+knitr::kable(pred, digits = 2)
 ```
 
 
@@ -153,9 +173,9 @@ volcanoPlot(res_Simes, p = 1e-3, r = 1)
 
 This type of plot is called a "volcano plot" @CC2003. Post hoc inference makes it possible to obtain statistical guarantees on selections such as the ones represented in the above figure.
 
-# MA more powerful method
+# A more powerful method
 
-To obtain more informative results, we use the calibration method introduced by @blanchard20post-hoc and @enjalbert-courrech2022powerful. This method uses sample label permutations to learn the gene dependence structure and obtain a more powerful method. 
+To obtain more informative results, we use the calibration method introduced by @blanchard20post-hoc, see also @enjalbert-courrech2022powerful. This method uses sample label permutations to learn the gene dependence structure from the data, and therefore obtain more precise post hoc bounds.
 
 ```{r}
 #| label: calibration

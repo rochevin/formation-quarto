@@ -2,25 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Nicolas Enjalbert Courrech and Pierre Neuvial">
-<meta name="dcterms.date" content="2026-08-28">
+<meta name="dcterms.date" content="2026-09-11">
 
 <title>Case study: differential gene expression analysis – Formation Quarto</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
+code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: 1.5em;}
-div.column{flex: auto;}
-@media screen {
-div.columns{gap: min(4vw, 1.5em);}
-div.column{overflow-x: auto;}
-}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -98,10 +95,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-a73aa50bcc2439080139ef45b578bb43.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8328776c4b7a39cd72a4ae3682bd5636.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -131,7 +128,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -197,7 +194,6 @@ window.Quarto = {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -280,7 +276,7 @@ window.Quarto = {
   <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing"><span class="header-section-number">2</span> Preprocessing</a></li>
   <li><a href="#differential-analysis" id="toc-differential-analysis" class="nav-link" data-scroll-target="#differential-analysis"><span class="header-section-number">3</span> Differential analysis</a></li>
   <li><a href="#volcano-plots" id="toc-volcano-plots" class="nav-link" data-scroll-target="#volcano-plots"><span class="header-section-number">4</span> Volcano plots</a></li>
-  <li><a href="#ma-more-powerful-method" id="toc-ma-more-powerful-method" class="nav-link" data-scroll-target="#ma-more-powerful-method"><span class="header-section-number">5</span> MA more powerful method</a></li>
+  <li><a href="#a-more-powerful-method" id="toc-a-more-powerful-method" class="nav-link" data-scroll-target="#a-more-powerful-method"><span class="header-section-number">5</span> A more powerful method</a></li>
   <li><a href="#session-information" id="toc-session-information" class="nav-link" data-scroll-target="#session-information"><span class="header-section-number">6</span> Session information</a></li>
   <li><a href="#reproducibility" id="toc-reproducibility" class="nav-link" data-scroll-target="#reproducibility"><span class="header-section-number">7</span> Reproducibility</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">8</span> References</a></li>
@@ -309,7 +305,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 28, 2026</p>
+      <p class="date">September 11, 2026</p>
     </div>
   </div>
   
@@ -322,37 +318,83 @@ window.Quarto = {
 
 
 <p>This vignette illustrates the use of <code>quarto</code> to build a reproducible data analysis report.</p>
+<p>We start by installing and loading required packages.</p>
+<p>Installation:</p>
 <div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(<span class="st">"ggplot2"</span>) <span class="sc">||</span> <span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(<span class="st">"sanssouci"</span>) <span class="sc">||</span> remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"sanssouci-org/sanssouci@develop"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
+<p>Loading:</p>
 <div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggplot2"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"sanssouci"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"matrixStats"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 <section id="motivation-a-differential-gene-expression-study" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Motivation: a differential gene expression study</h1>
 <p>Differential gene expression studies aim at identifying genes whose mean expression level differs significantly between two (or more) populations, based on a sample of gene expression measurements from individuals from these populations. The data is stored in the package <code>sanssouci.data</code> and can be loaded as follows:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"RNAseq_blca"</span>, <span class="at">package =</span> <span class="st">"sanssouci.data"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> RNAseq_blca</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">colnames</span>(RNAseq_blca) <span class="sc">==</span> <span class="st">"III"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(RNAseq_blca)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"RNAseq_blca"</span>, <span class="at">package =</span> <span class="st">"sanssouci.data"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
-<p>This data set consists of gene expression measurements for <span class="math inline">\(n = 270\)</span> patients from the Cancer Genome Atlas Urothelial Bladder Carcinoma (TCGA-BLCA) data collection (<span class="citation" data-cites="tcga2014blca"><span class="nocase">Cancer Genome Atlas Research Network et al.</span> (<a href="#ref-tcga2014blca" role="doc-biblioref">2014</a>)</span>). The patients are classified into two subgoups, according to their clinical stage (II or III).</p>
+<p>This data set consists of gene expression measurements for <span class="math inline">\(n = 270\)</span> patients from the Cancer Genome Atlas Urothelial Bladder Carcinoma (TCGA-BLCA) data collection (<span class="citation" data-cites="tcga2014blca"><span class="nocase">Cancer Genome Atlas Research Network et al.</span> (<a href="#ref-tcga2014blca" role="doc-biblioref">2014</a>)</span>). The patients are classified into two subgoups, according to their clinical stage (II or III). For convenience we rename the data set and create a <code>groups</code> variable:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> RNAseq_blca</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">colnames</span>(Y) <span class="sc">==</span> <span class="st">"III"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(RNAseq_blca)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">table</span>(groups))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">groups</th>
+<th style="text-align: right;">Freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">130</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">140</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 <section id="preprocessing" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Preprocessing</h1>
 <p>Following standard practice in RNAseq data analysis, we convert these measurements to to <em>count per millions</em> (CPM) in order to make them comparable across samples.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>CPM <span class="ot">&lt;-</span> Y<span class="sc">/</span><span class="fu">colSums</span>(Y)<span class="sc">*</span><span class="fl">1e6</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(<span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> CPM)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>CPM <span class="ot">&lt;-</span> Y<span class="sc">/</span><span class="fu">colSums</span>(Y)<span class="sc">*</span><span class="fl">1e6</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(<span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> CPM)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-CPM" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-CPM-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="vignette_files/figure-html/fig-CPM-1.png" class="img-fluid figure-img" width="768">
+<img src="vignette_files/figure-html/fig-CPM-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CPM-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Empirical distribution of gene expression across all genes and samples
@@ -361,17 +403,20 @@ Figure&nbsp;1: Empirical distribution of gene expression across all genes and sa
 </div>
 </div>
 </div>
-<p>We now filter out genes with very low counts in all samples and plot the corresponding distribution:</p>
+<p>We now filter out genes with very low counts (more precisely: genes for which 75% of samples have less than 5 reads) and plot the corresponding distribution:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ww <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">rowQuantiles</span>(<span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> CPM), <span class="at">prob =</span> <span class="fl">0.75</span>) <span class="sc">&lt;</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">5</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> CPM[<span class="sc">-</span>ww, ]</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(<span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> Y)))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ww <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">rowQuantiles</span>(<span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> CPM), <span class="at">prob =</span> <span class="fl">0.75</span>) <span class="sc">&lt;</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">5</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> CPM[<span class="sc">-</span>ww, ]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(<span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> Y)))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-CPM-filter" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-CPM-filter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="vignette_files/figure-html/fig-CPM-filter-1.png" class="img-fluid figure-img" width="768">
+<img src="vignette_files/figure-html/fig-CPM-filter-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CPM-filter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Empirical distribution of gene expression across all samples after gene filtering
@@ -388,16 +433,18 @@ Figure&nbsp;2: Empirical distribution of gene expression across all samples afte
 <blockquote class="blockquote">
 <p>For which genes is there a difference in the distribution of expression levels between the stage II and stage III populations?</p>
 </blockquote>
-<p>This question can be addressed by performing one statistical test per gene, and to define “differentially expressed” genes as those passing some significance threshold. Below, we use the Wilcoxon rank sum (or Mann-Whitney) test for comparing two independent samples. This is a rank-based non-parametric test. A fast version of this test is implemented in the <code>sanssouci::rowWilcoxonTests</code> function.</p>
+<p>This question can be addressed by performing one statistical test per gene, and to define “differentially expressed” (DE) genes as those passing some significance threshold. Below, we use the Wilcoxon rank sum (or Mann-Whitney) test for comparing two independent samples. It is a rank-based, non-parametric test. A fast version of this test is implemented in the <code>sanssouci::rowWilcoxonTests</code> function.</p>
 <p>We create an object of class <code>SansSouci</code> and run the <code>fit</code> method to use the (parametric) Simes method introduced by <span class="citation" data-cites="GS2011">Goeman and Solari (<a href="#ref-GS2011" role="doc-biblioref">2011</a>)</span>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">SansSouci</span>(<span class="at">Y =</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> Y), <span class="at">groups =</span> groups)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">=</span> <span class="fl">0.1</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>res_Simes <span class="ot">&lt;-</span> <span class="fu">fit</span>(obj, <span class="at">B =</span> <span class="dv">0</span>, <span class="at">family =</span> <span class="st">"Simes"</span>, <span class="at">alpha =</span> alpha,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">rowTestFUN =</span> rowWilcoxonTests) <span class="do">## B=0 =&gt; no calibration!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">SansSouci</span>(<span class="at">Y =</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> Y), <span class="at">groups =</span> groups)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">=</span> <span class="fl">0.1</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>res_Simes <span class="ot">&lt;-</span> <span class="fu">fit</span>(obj, <span class="at">B =</span> <span class="dv">0</span>, <span class="at">family =</span> <span class="st">"Simes"</span>, <span class="at">alpha =</span> alpha,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">rowTestFUN =</span> rowWilcoxonTests) <span class="do">## B=0 =&gt; no calibration!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
-<p>How many genes are differentially expressed? For any user-defined gene subset, the method reports a lower bound on the number of truly differentially expressed genes (DEG), or, equivalently, an upper bound on the proportion of truly differentially expressed genes.</p>
-<p>The target risk level is set to <span class="math inline">\(\alpha = 0.1\)</span>, meaning that all of the statements made below will be true with probability greater than <span class="math inline">\(1-\alpha= 0.9\)</span>.</p>
+<p>How many genes are differentially expressed? For any user-defined gene subset, the method reports a lower bound on the number of truly differentially expressed genes (DEG), or, equivalently, an upper bound on the proportion of truly differentially expressed genes<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <p>For example, we can consider the following three gene subsets:</p>
 <ul>
 <li><span class="math inline">\(S_1\)</span>: all genes</li>
@@ -405,23 +452,48 @@ Figure&nbsp;2: Empirical distribution of gene expression across all samples afte
 <li><span class="math inline">\(S_3\)</span>: all genes whose <span class="math inline">\(p\)</span>-value is below 0.001 and fold change above 0.1:</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>S1 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>m</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(res_Simes, <span class="at">S =</span> S1)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>S2 <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">rank</span>(<span class="fu">pValues</span>(res_Simes)) <span class="sc">&lt;=</span> <span class="dv">500</span>) </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(res_Simes, <span class="at">S =</span> S2)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>S3 <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">pValues</span>(res_Simes) <span class="sc">&lt;</span> <span class="fl">0.001</span> <span class="sc">&amp;</span> <span class="fu">abs</span>(<span class="fu">foldChanges</span>(res_Simes)) <span class="sc">&gt;</span> <span class="fl">0.1</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(res_Simes, <span class="at">S =</span> S3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>S1 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>m</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(res_Simes, <span class="at">S =</span> S1)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>p1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>         TP         FDP 
+928.0000000   0.9259614 </code></pre>
 </div>
-<p>Table <a href="#tbl-pred" class="quarto-xref">Table&nbsp;1</a> summarizes the results in a singl table:</p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>S2 <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">rank</span>(<span class="fu">pValues</span>(res_Simes)) <span class="sc">&lt;=</span> <span class="dv">500</span>) </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(res_Simes, <span class="at">S =</span> S2)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>p2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     TP     FDP 
+479.000   0.042 </code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>S3 <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">pValues</span>(res_Simes) <span class="sc">&lt;</span> <span class="fl">0.001</span> <span class="sc">&amp;</span> <span class="fu">abs</span>(<span class="fu">foldChanges</span>(res_Simes)) <span class="sc">&gt;</span> <span class="fl">0.1</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(res_Simes, <span class="at">S =</span> S3)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>p3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>         TP         FDP 
+766.0000000   0.1393258 </code></pre>
+</div>
+</div>
+<p>The results can be summarized in a single table (see Table <a href="#tbl-pred" class="quarto-xref">Table&nbsp;1</a>):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">rbind</span>(p1, p2, p3)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"all genes"</span>, </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"500 most significant genes"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"all genes whose $p$-value is below 0.001 and fold change above 0.1"</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Gene subset"</span> <span class="ot">=</span> labels, pred)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(pred)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">rbind</span>(p1, p2, p3)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"all genes"</span>, </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"500 most significant genes"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"all genes whose $p$-value is below 0.001 and fold change above 0.1"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Gene subset"</span> <span class="ot">=</span> labels, pred)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(pred, <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div id="tbl-pred" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -432,9 +504,9 @@ Table&nbsp;1: Confidence bounds on the number of truly differentially expressed 
 <table class="cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 3%">
-<col style="width: 79%">
-<col style="width: 4%">
-<col style="width: 11%">
+<col style="width: 84%">
+<col style="width: 5%">
+<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -449,19 +521,19 @@ Table&nbsp;1: Confidence bounds on the number of truly differentially expressed 
 <td style="text-align: left;">p1</td>
 <td style="text-align: left;">all genes</td>
 <td style="text-align: right;">928</td>
-<td style="text-align: right;">0.9259614</td>
+<td style="text-align: right;">0.93</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">p2</td>
 <td style="text-align: left;">500 most significant genes</td>
 <td style="text-align: right;">479</td>
-<td style="text-align: right;">0.0420000</td>
+<td style="text-align: right;">0.04</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">p3</td>
 <td style="text-align: left;">all genes whose <span class="math inline">\(p\)</span>-value is below 0.001 and fold change above 0.1</td>
 <td style="text-align: right;">766</td>
-<td style="text-align: right;">0.1393258</td>
+<td style="text-align: right;">0.14</td>
 </tr>
 </tbody>
 </table>
@@ -476,32 +548,41 @@ Table&nbsp;1: Confidence bounds on the number of truly differentially expressed 
 <!-- For an interactive volcano plot, see the [volcano plot shiny application]( https://shiny-iidea-sanssouci.apps.math.cnrs.fr/). -->
 <p>A classical practice in gene expression studies is to define DE genes as those passing both a significance filter (small <span class="math inline">\(p\)</span>-value) and an effect size or “fold change” filter. Here, the fold change of a gene is defined as the difference between the expression medians (on the log scale) of the two groups compared. This double selection by <span class="math inline">\(p\)</span>-value and fold change corresponds to two sets of genes, with positive/negative fold change, which can be represented in the following plot:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">volcanoPlot</span>(res_Simes, <span class="at">p =</span> <span class="fl">1e-3</span>, <span class="at">r =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">volcanoPlot</span>(res_Simes, <span class="at">p =</span> <span class="fl">1e-3</span>, <span class="at">r =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="vignette_files/figure-html/volcano-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="vignette_files/figure-html/volcano-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>This type of plot is called a “volcano plot” <span class="citation" data-cites="CC2003">Cui and Churchill (<a href="#ref-CC2003" role="doc-biblioref">2003</a>)</span>. Post hoc inference makes it possible to obtain statistical guarantees on selections such as the ones represented in the above figure.</p>
 </section>
-<section id="ma-more-powerful-method" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> MA more powerful method</h1>
-<p>To obtain more informative results, we use the calibration method introduced by <span class="citation" data-cites="blanchard20post-hoc">Blanchard et al. (<a href="#ref-blanchard20post-hoc" role="doc-biblioref">2020</a>)</span> and <span class="citation" data-cites="enjalbert-courrech2022powerful">Enjalbert Courrech and Neuvial (<a href="#ref-enjalbert-courrech2022powerful" role="doc-biblioref">2022</a>)</span>. This method uses sample label permutations to learn the gene dependence structure and obtain a more powerful method.</p>
+<section id="a-more-powerful-method" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> A more powerful method</h1>
+<p>To obtain more informative results, we use the calibration method introduced by <span class="citation" data-cites="blanchard20post-hoc">Blanchard et al. (<a href="#ref-blanchard20post-hoc" role="doc-biblioref">2020</a>)</span> and <span class="citation" data-cites="enjalbert-courrech2022powerful">Enjalbert Courrech and Neuvial (<a href="#ref-enjalbert-courrech2022powerful" role="doc-biblioref">2022</a>)</span>. This method uses sample label permutations to learn the gene dependence structure and therefore obtain more precise post hoc bounds.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">SansSouci</span>(<span class="at">Y =</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> Y), <span class="at">groups =</span> groups)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>res_perm <span class="ot">&lt;-</span> <span class="fu">fit</span>(obj, <span class="at">B =</span> <span class="dv">1000</span>, <span class="at">alpha =</span> alpha, <span class="at">family =</span> <span class="st">"Simes"</span>,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">rowTestFUN =</span> rowWilcoxonTests)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">SansSouci</span>(<span class="at">Y =</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> Y), <span class="at">groups =</span> groups)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>res_perm <span class="ot">&lt;-</span> <span class="fu">fit</span>(obj, <span class="at">B =</span> <span class="dv">1000</span>, <span class="at">alpha =</span> alpha, <span class="at">family =</span> <span class="st">"Simes"</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">rowTestFUN =</span> rowWilcoxonTests)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 <p>The annotations in the corresponding volcano plot illustrate a gain in power (more true positives, lower FDP):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">volcanoPlot</span>(res_perm, <span class="at">p =</span> <span class="fl">1e-3</span>, <span class="at">r =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">volcanoPlot</span>(res_perm, <span class="at">p =</span> <span class="fl">1e-3</span>, <span class="at">r =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="vignette_files/figure-html/volcano_perm-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="vignette_files/figure-html/volcano_perm-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -510,56 +591,63 @@ Table&nbsp;1: Confidence bounds on the number of truly differentially expressed 
 <section id="session-information" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Session information</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; R version 4.6.1 (2026-06-24)</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Running under: Ubuntu 24.04.4 LTS</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Matrix products: default</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; locale:</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] LC_CTYPE=fr_FR.UTF-8       LC_NUMERIC=C              </span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [3] LC_TIME=fr_FR.UTF-8        LC_COLLATE=fr_FR.UTF-8    </span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] LC_MONETARY=fr_FR.UTF-8    LC_MESSAGES=fr_FR.UTF-8   </span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] LC_PAPER=fr_FR.UTF-8       LC_NAME=C                 </span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [11] LC_MEASUREMENT=fr_FR.UTF-8 LC_IDENTIFICATION=C       </span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; time zone: Europe/Paris</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; tzcode source: system (glibc)</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; attached base packages:</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] stats     graphics  grDevices datasets  utils     methods   base     </span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; other attached packages:</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] matrixStats_1.5.0 sanssouci_0.16.3  ggplot2_4.0.3    </span></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] Matrix_1.7-5        gtable_0.3.6        jsonlite_2.0.0     </span></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] dplyr_1.2.1         compiler_4.6.1      renv_1.1.4         </span></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] tidyselect_1.2.1    scales_1.4.0        yaml_2.3.12        </span></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] fastmap_1.2.0       lattice_0.22-9      R6_2.6.1           </span></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] labeling_0.4.3      generics_0.1.4      knitr_1.51         </span></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [16] htmlwidgets_1.6.4   tibble_3.3.1        pillar_1.11.1      </span></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [19] RColorBrewer_1.1-3  rlang_1.3.0         xfun_0.60          </span></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [22] S7_0.2.2            otel_0.2.0          cli_3.6.6          </span></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [25] withr_3.0.3         magrittr_2.0.5      matrixTests_0.2.3.1</span></span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [28] digest_0.6.39       grid_4.6.1          rstudioapi_0.19.0  </span></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [31] lifecycle_1.0.5     vctrs_0.7.3         evaluate_1.0.5     </span></span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [34] glue_1.8.1          farver_2.1.2        codetools_0.2-20   </span></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [37] rmarkdown_2.31      tools_4.6.1         pkgconfig_2.0.3    </span></span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [40] htmltools_0.5.9</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.6.1 (2026-06-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 24.04.4 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+
+locale:
+ [1] LC_CTYPE=fr_FR.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=fr_FR.UTF-8        LC_COLLATE=fr_FR.UTF-8    
+ [5] LC_MONETARY=fr_FR.UTF-8    LC_MESSAGES=fr_FR.UTF-8   
+ [7] LC_PAPER=fr_FR.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=fr_FR.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Europe/Paris
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices datasets  utils     methods   base     
+
+other attached packages:
+[1] matrixStats_1.5.0 sanssouci_0.16.3  ggplot2_4.0.3    
+
+loaded via a namespace (and not attached):
+ [1] vctrs_0.7.3         cli_3.6.6           knitr_1.51         
+ [4] rlang_1.3.0         xfun_0.60           renv_1.1.4         
+ [7] generics_0.1.4      S7_0.2.2            jsonlite_2.0.0     
+[10] labeling_0.4.3      glue_1.8.1          htmltools_0.5.9    
+[13] scales_1.4.0        rmarkdown_2.31      grid_4.6.1         
+[16] evaluate_1.0.5      tibble_3.3.1        fastmap_1.2.0      
+[19] matrixTests_0.2.3.1 yaml_2.3.12         lifecycle_1.0.5    
+[22] compiler_4.6.1      codetools_0.2-20    dplyr_1.2.1        
+[25] RColorBrewer_1.1-3  pkgconfig_2.0.3     htmlwidgets_1.6.4  
+[28] rstudioapi_0.19.0   lattice_0.22-9      farver_2.1.2       
+[31] digest_0.6.39       R6_2.6.1            tidyselect_1.2.1   
+[34] pillar_1.11.1       magrittr_2.0.5      Matrix_1.7-5       
+[37] withr_3.0.3         tools_4.6.1         gtable_0.3.6       </code></pre>
+</div>
 </div>
 </section>
 <section id="reproducibility" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> Reproducibility</h1>
 <p>To re-build this vignette from its source, use:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>quarto<span class="sc">::</span><span class="fu">quarto_render</span>(<span class="st">"post-hoc_differential-expression_RNAseq.qmd"</span>, <span class="at">output_format =</span> <span class="st">"pdf"</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># To keep intermediate files, add option 'clean = FALSE' (rmarkdown-based rendering)</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>quarto<span class="sc">::</span><span class="fu">quarto_render</span>(<span class="st">"post-hoc_differential-expression_RNAseq.qmd"</span>, <span class="at">output_format =</span> <span class="st">"html"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>quarto<span class="sc">::</span><span class="fu">quarto_render</span>(<span class="st">"post-hoc_differential-expression_RNAseq.qmd"</span>, <span class="at">output_format =</span> <span class="st">"pdf"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># To keep intermediate files, add option 'clean = FALSE' (rmarkdown-based rendering)</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>quarto<span class="sc">::</span><span class="fu">quarto_render</span>(<span class="st">"post-hoc_differential-expression_RNAseq.qmd"</span>, <span class="at">output_format =</span> <span class="st">"html"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 </section>
 <section id="references" class="level1" data-number="8">
@@ -568,6 +656,7 @@ Table&nbsp;1: Confidence bounds on the number of truly differentially expressed 
 
 
 </section>
+
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">8 References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-blanchard20post-hoc" class="csl-entry" role="listitem">
@@ -585,7 +674,12 @@ Enjalbert Courrech, Nicolas, and Pierre Neuvial. 2022. <span>“<span class="noc
 <div id="ref-GS2011" class="csl-entry" role="listitem">
 Goeman, Jelle J, and Aldo Solari. 2011. <span>“Multiple Testing for Exploratory Research.”</span> <em>Statistical Science</em> 26 (4): 584–97.
 </div>
-</div></section></div></main> <!-- /main -->
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>The target risk level is set to <span class="math inline">\(\alpha = 0.1\)</span>, meaning that all of the statements made below will be true with probability greater than <span class="math inline">\(1-\alpha= 0.9\)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
